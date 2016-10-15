@@ -1,5 +1,6 @@
 Objects:
 Objects can be created in one of 3 ways
+
 1. Literal notation
 2. By using new operator
 3. By Object.create
@@ -15,11 +16,13 @@ Objects can be created in one of 3 ways
   var obj = new Person();
   new object will created by using Person contructor function
   obj instanceof Person = true
+  
   obj instanceof Object = true
   
 3. By using Object.create
    var obj1 = Object.create( obj1 )
    will create a new object obj2 by extending the obj1
+   
    
 new Object() vs Object.create()
 new Object will create a new object by using constructor function.
