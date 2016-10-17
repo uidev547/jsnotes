@@ -1,5 +1,17 @@
-import { Pipe } from 'angular2/core';
-
+import { Pipe } from '@angular/core';
+/**
+* array = [ 'data1', 'data2']
+* <div *ngFor="let iemm of array | filter : searchTerm">
+  </div>
+  
+  
+* array = [{
+   'key1': 'data',
+   'key2': 'data'
+  }]
+  <div *ngFor="let iemm of array | filter : searchTerm : ['key2'] ">
+  </div>
+*/
 
 @Pipe( { 
     name: 'filter' 
