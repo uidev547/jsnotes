@@ -1,0 +1,20 @@
+Promise:
+var promise = new Promise( (resolve, reject) => {
+  setTimeout(() => {
+    resolve( 'resolved' );
+  }, 1000 );
+} );
+promise.then((res)=>{console.log('res', res)}, (err)=>{console.log('err', err)});
+
+Promises are hungry
+
+
+
+var rx = Rx.Observable.create( (observer) => {
+  setTimeout(() => {
+    observer.onNext( 'resolved' );
+  }, 1000 );
+} );
+rx.forEach((res)=>{console.log('res', res)}, (err)=>{console.log('err', err)});
+Observables are lazy.
+
