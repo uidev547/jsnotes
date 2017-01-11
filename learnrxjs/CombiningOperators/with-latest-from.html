@@ -1,0 +1,44 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS withLatestFrom</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>withLatestFrom</h1>
+            <ul>
+                <li>withLatestFrom combined multiple Observables and emit the event with latest values from each Observables </li>
+                <li>To emit the first result all the observables must be emmited at least once.</li>
+                <li>This operator can be used only with instance method!</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="withLatestFrom with Observable instance" data-subscription="withLatestFrom_1$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 1000).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.timer(1500, 3000).map((x) => `SECOND:${x}`);
+    window.withLatestFrom_1$ = first$.withLatestFrom(second$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+
+        <script class="append-script" data-id="2" data-title="Example with click event" data-subscription="withLatestFrom_2$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 1000).map((x) => `FIRST:${x}`);
+    var clicks$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0)
+                .map( (x) => 'CLICK Counter: ' + x);
+    window.withLatestFrom_2$ = first$.withLatestFrom(clicks$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+    </body>
+</html>

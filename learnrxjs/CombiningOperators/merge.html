@@ -1,0 +1,57 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS Merge</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>merge</h1>
+            <ul>
+                <li>Merge multiple Observables and emit the event in the same order of the all Observables </li>
+                <li>This operator can be used as either a static or instance method!</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2" ></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="3"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="merge with Observable instance" data-subscription="merge_1$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 3000).take(2).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.timer(1500, 3000).take(3).map((x) => `SECOND:${x}`);
+    window.merge_1$ = first$.merge(second$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+
+        <script class="append-script" data-id="2" data-title="concat with Static Method" data-subscription="merge_2$">(function(){ 
+    var first$ = Rx.Observable.timer(2000, 3000).take(3).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.timer(1000, 3000).take(3).map((x) => `SECOND:${x}`);
+    var third$ = Rx.Observable.timer(1500, 3000).take(3).map((x) => `THIRD:${x}`);
+    window.merge_2$ = Rx.Observable.merge(first$, second$, third$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+
+        <script class="append-script" data-id="3" data-title="Example with Click event" data-subscription="merge_3$">(function(){ 
+    var first$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0)
+                .map( (x) => 'CLICK Counter: ' + x);
+    var second$ = Rx.Observable.timer(1000, 3000)
+                .map((x) => `SECOND:${x}`);
+    window.merge_3$ = Rx.Observable.merge(first$, second$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample3'));
+                        });
+})();</script>
+    </body>
+</html>

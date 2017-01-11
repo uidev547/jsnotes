@@ -1,0 +1,56 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RxJs CombineLatest</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>CombineLatest</h1>
+            <ul>
+                <li>Combine the multiple observables and emits the latest from each observables.</li>
+                <li>To emit the first result all the observables must be emmited at least once.</li>
+                <li>This operator can be used as either a static or instance method!</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2" ></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="combineLatest with instance (Example with click)" data-subscription="['combineLatest_1$','first_1$', 'second_1$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 3000);
+    var second$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0);
+    window.first_1$ = first$.subscribe((res) => {
+                        printOutput('First: ' + res, document.getElementById('result-sample1'));
+                    });
+    window.second_1$ = second$.subscribe((res) => {
+                        printOutput('SecondObservableClick: ' + res, document.getElementById('result-sample1'));
+                    });
+    window.combineLatest_1$ = first$.combineLatest(second$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+
+
+        <script class="append-script" data-id="2" data-title="combineLatest with Static instance" data-subscription="['combineLatest_2$','first_2$','second_2$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 3000);
+    var second$ = Rx.Observable.timer(2000, 4000);
+    window.first_2$ = first$.subscribe((res) => {
+                        printOutput('FIRST: ' + res, document.getElementById('result-sample2'));
+                    });
+    window.second_2$ = second$.subscribe((res) => {
+                        printOutput('SECOND: ' + res, document.getElementById('result-sample2'));
+                    });
+    window.combineLatest_2$ = Rx.Observable.combineLatest(first$, second$)
+                        .subscribe(([first, second]) => {
+                            printOutput(`combineLatest: ${first}, ${second}` , document.getElementById('result-sample2'));
+                        });
+})();</script>
+    </body>
+</html>

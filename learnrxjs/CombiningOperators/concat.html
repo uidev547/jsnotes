@@ -1,0 +1,62 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS concat</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>concat</h1>
+            <ul>
+                <li>Combine the multilple observables. After the completion of the first Observable, then next Observable will be handled </li>
+                <li>If the any Observable never completes then next Observable will become unreachable.. </li>
+                <li>This operator can be used as either a static or instance method!</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2" ></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="3"></div>
+                <div class="col-sm-6 demo-code" data-id="4"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="concat with Observable instance" data-subscription="concat_1$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 3000).take(2).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.timer(2000, 3000).take(3).map((x) => `SECOND:${x}`);
+    window.concat_1$ = first$.concat(second$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+        <script class="append-script" data-id="2" data-title="concat with Static Method" data-subscription="concat_2$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 3000).take(2).map((x) => `FIRST:${x}`);;
+    var second$ = Rx.Observable.timer(2000, 3000).take(3).map((x) => `SECOND:${x}`);
+    window.concat_2$ = Rx.Observable.concat(first$, second$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+        <script class="append-script" data-id="3" data-title="concat with Delayed source (to run Second Observable click 2 times)" data-subscription="concat_3$">(function(){ 
+    var first$ = Rx.Observable.fromEvent(document, 'click').take(2);
+    var second$ = Rx.Observable.of(1,2,3).map((x) => `SECOND:${x}`);
+    window.concat_3$ = Rx.Observable.concat(first$, second$)
+                        .subscribe((res) => {
+                            printOutput(res , document.getElementById('result-sample3'));
+                        });
+})();</script>
+        <script class="append-script" data-id="4" data-title="concat with Never completes source" data-subscription="concat_4$">(function(){ 
+    var first$ = Rx.Observable.timer(2000, 1000)
+    var second$ = Rx.Observable.of('Never Reached Observable');
+    window.concat_4$ = Rx.Observable.concat(first$, second$)
+                        .subscribe((res) => {
+                            printOutput(res , document.getElementById('result-sample4'));
+                        });
+})();</script>
+
+    </body>
+</html>

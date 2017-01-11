@@ -1,0 +1,76 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS sample</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>sample</h1>
+            <ul>
+                <li>'sample'' combined with source and target Observables</li>
+                <li>'sample'' will emit the event with below condition
+                    <ul>
+                        <li>source should have already emmited the event once</li>
+                        <li>Emit the event iff target emitted the event</li>
+                        <li>To emit the new event source should have emit the new event before the target emit the event.</li>
+                    </ul>
+                </li>
+                <li>This operator can be used only with instance method!</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="3"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="sample with Observable first one more frequent" data-subscription="['sample_1$', 'first_1$', 'second_1$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 2000).map((x) => 'First:' + x);
+    var second$ = Rx.Observable.timer(1500, 4000).map((x) => `SECOND:${x}`);
+    window.first_1$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+    window.second_1$ = second$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+    window.sample_1$ = first$.sample(second$)
+                        .subscribe((res) => {
+                            printOutput('From sample (latest from source): ' + res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+    <script class="append-script" data-id="2" data-title="sample with Observable Second one more frequent emmiter" data-subscription="['sample_2$', 'first_2$', 'second_2$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 4000).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.timer(1500, 2000).map((x) => `SECOND:${x}`);
+    window.first_2$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+    window.second_2$ = second$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+    window.sample_2$ = first$.sample(second$)
+                        .subscribe((res) => {
+                            printOutput('From sample (latest from source): ' + res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+    <script class="append-script" data-id="3" data-title="with target as click event" data-subscription="['sample_3$', 'first_3$', 'second_3$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 4000).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.fromEvent(document, 'click');
+    window.first_3$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample3'));
+                        });
+    window.second_3$ = second$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample3'));
+                        });
+    window.sample_3$ = first$.sample(second$)
+                        .subscribe((res) => {
+                            printOutput('From sample (latest from source): ' + res, document.getElementById('result-sample3'));
+                        });
+})();</script>
+    </body>
+</html>

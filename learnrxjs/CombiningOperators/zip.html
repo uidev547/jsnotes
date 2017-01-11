@@ -1,0 +1,89 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS zip</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>zip</h1>
+            <ul>
+                <li>'zip' combined with multiple Observables and emit the value[As ARRAY with same indexed emmited values of Observables] if all the Observables cycle completes </li>
+                <li>This operator can be used as either a static or instance method...</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="3"></div>
+                <div class="col-sm-6 demo-code" data-id="4"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="zip with Observable first one more frequent" data-subscription="['zip_1$', 'first_1$', 'second_1$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 2000).map((x) => 'First:' + x);
+    var second$ = Rx.Observable.timer(1500, 4000).map((x) => `SECOND:${x}`);
+    window.first_1$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+    window.second_1$ = second$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+    window.zip_1$ = first$.zip(second$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+    <script class="append-script" data-id="2" data-title="zip with Observable Second one more frequent emmiter" data-subscription="['zip_2$', 'first_2$', 'second_2$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 4000).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.timer(1500, 2000).map((x) => `SECOND:${x}`);
+    window.first_2$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+    window.second_2$ = second$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+    window.zip_2$ = first$.zip(second$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+
+    <script class="append-script" data-id="3" data-title="zip with static Instance" data-subscription="['zip_3$', 'first_3$', 'second_3$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 4000).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.timer(1500, 2000).map((x) => `SECOND:${x}`);
+    window.first_3$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample3'));
+                        });
+    window.second_3$ = second$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample3'));
+                        });
+    window.zip_3$ = Rx.Observable.zip(second$, first$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample3'));
+                        });
+})();</script>
+
+    <script class="append-script" data-id="4" data-title="Example with Click event" data-subscription="['zip_4$', 'first_4$', 'second_4$']">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 4000).map((x) => `FIRST:${x}`);
+    var second$ = Rx.Observable.timer(1500, 2000).map((x) => `SECOND:${x}`);
+    var clicks$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0)
+                .map( (x) => 'CLICK Counter: ' + x);
+    window.first_4$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample4'));
+                        });
+    window.second_4$ = second$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample4'));
+                        });
+    window.zip_4$ = Rx.Observable.zip(second$, first$, clicks$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample4'));
+                        });
+})();</script>
+    </body>
+</html>
