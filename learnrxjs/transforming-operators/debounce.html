@@ -1,0 +1,43 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS debounce</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>debounce</h1>
+            <ul>
+                <li>debounce Discard emitted values based on the selector function</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="3"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="debounce with incremental debunce value (will print just first 5)" data-subscription="debounce_1$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 1000);
+    window.debounce_1$ = first$.debounce((x) => Rx.Observable.timer(200*x))
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+    <script class="append-script" data-id="2" data-title="Example with click event (To print click counter there should be a gap of atleast 1 sec betweent the click)" data-subscription="debounce_2$">(function(){ 
+    var first$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0);
+    window.debounce_2$ = first$.debounce((x) => Rx.Observable.timer(1000))
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+
+
+    </body>
+</html>

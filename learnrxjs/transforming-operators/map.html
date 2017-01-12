@@ -1,0 +1,39 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS map</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>map</h1>
+            <ul>
+                <li>map will transform the input and emit the new value</li>
+                <li>This operator can be used  instance method!</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="map with 10 seconds" data-subscription="map_1$">(function(){ 
+    var first$ = Rx.Observable.of(1000, 3000);
+    window.map_1$ = first$.map((x) => x + 10).subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+    <script class="append-script" data-id="2" data-title="Example with click event (print click counter with map of 1s)" data-subscription="map_2$">(function(){ 
+    var first$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0)
+                .map((x) => 'ClickCounter:' + x);
+    window.map_2$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+
+    </body>
+</html>

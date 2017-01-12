@@ -1,0 +1,39 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS delayWhen</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>delayWhen</h1>
+            <ul>
+                <li>delayWhen will emit the event value based on provided function</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="delayWhen with 10 seconds" data-subscription="delayWhen_1$">(function(){ 
+    var first$ = Rx.Observable.of(1000, 3000);
+    window.delayWhen_1$ = first$.delayWhen(() => Rx.Observable.of(10000))
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+    <script class="append-script" data-id="2" data-title="Example with click event (print click counter with delayWhen of 1s)" data-subscription="delayWhen_2$">(function(){ 
+    var first$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0)
+                .delayWhen((x) => Rx.Observable.of(x*1000))
+    window.delayWhen_2$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+
+    </body>
+</html>

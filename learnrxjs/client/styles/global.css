@@ -11,6 +11,9 @@
     background: #000;
     color: #fff;
 }
+.snippet-content input {
+    color: #000;
+}
 .snippet-content.auto-height {
     height: auto;
 }

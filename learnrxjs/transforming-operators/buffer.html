@@ -1,0 +1,50 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS buffer</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>buffer, bufferCount and bufferTime </h1>
+            <ul>
+                <li>buffer Collect output values until provided observable emits, emit as array.</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="3"></div>
+            </div>
+            
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="buffer example with Click" data-subscription="buffer_1$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 1000);
+    var click$ = Rx.Observable.fromEvent(document, 'click');
+    window.buffer_1$ = first$.buffer(click$)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+    <script class="append-script" data-id="2" data-title="bufferTime example (buffer time as 2000ms)" data-subscription="bufferTime_1$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 1000);
+    window.bufferTime_1$ = first$.bufferTime(2000)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+
+    <script class="append-script" data-id="3" data-title="bufferCount example (value as 3)" data-subscription="bufferCount_1$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 1000);
+    window.bufferCount_1$ = first$.bufferCount(3)
+                        .subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample3'));
+                        });
+})();</script>
+    </body>
+</html>

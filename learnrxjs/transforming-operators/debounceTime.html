@@ -1,0 +1,54 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS debounceTime</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>debounceTime</h1>
+            <ul>
+                <li>debounceTime Discard emitted values that take less than the specified time</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="3"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="debounceTime with 200ms " data-subscription="debounceTime_1$">(function(){ 
+    var first$ = Rx.Observable.timer(1000, 1000);
+    window.debounceTime_1$ = first$.debounceTime(200)
+                        .subscribe((res) => {
+                            printOutput('debounceTime(emit timer): ' + res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+    <script class="append-script" data-id="2" data-title="Example with click event (debounceTime 2s)" data-subscription="debounceTime_2$">(function(){ 
+    var first$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0);
+    window.debounceTime_2$ = first$.debounceTime(1000)
+                        .subscribe((res) => {
+                            printOutput('debounceTime(emit click counter): ' + res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+    <script>
+        $('#result-sample3').append('<input id="keyup-input"><p>Value:<span id="keyup-input-text"></span></p><small>debounceTime for text update is 1s</small>'); 
+        $(".demo-code[data-id='3']").find('.restart-script,.clear-output').hide();
+    </script>
+    <script class="append-script" data-id="3" data-title="Example with keyup event (debounceTime 1s)" data-subscription="debounceTime_3$">(function(){
+    var first$ = Rx.Observable.fromEvent(document.getElementById('keyup-input'), 'keyup');
+    window.debounceTime_3$ = first$.debounceTime(1000)
+                        .subscribe((e) => {
+                            $('#keyup-input-text').html(e.target.value);
+                        });
+})();</script>
+
+
+    </body>
+</html>

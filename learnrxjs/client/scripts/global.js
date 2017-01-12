@@ -73,6 +73,9 @@ $(function() {
         var id = $(this).data('id');
         var script = $(`.append-script[data-id="${id}"]`);
         script.remove();
-        $(document.body).append(script);
+        setTimeout(()=>{
+             $(document.body).append(script);
+        })
+       
     });
 });

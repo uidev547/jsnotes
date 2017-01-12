@@ -1,0 +1,39 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>RXJS scan</title>
+        <link href="../client/styles/global.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.3/Rx.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>scan</h1>
+            <ul>
+                <li>scan will transform the input and emit the new value</li>
+                <li>scan is like reduce method of array.. ( async reduce )</li>
+                <li>This operator can be used  instance method!</li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-6 demo-code" data-id="1"></div>
+                <div class="col-sm-6 demo-code" data-id="2"></div>
+            </div>
+        </div>
+        <script src="../client/scripts/global.js"></script>
+        <script class="append-script" data-id="1" data-title="scan with 10 seconds" data-subscription="scan_1$">(function(){ 
+    var first$ = Rx.Observable.of(1000, 3000);
+    window.scan_1$ = first$.scan((total, current) => total + current, 0).subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample1'));
+                        });
+})();</script>
+    <script class="append-script" data-id="2" data-title="Example with click event (print click counter)" data-subscription="scan_2$">(function(){ 
+    var first$ = Rx.Observable.fromEvent(document, 'click')
+                .scan((acc)=> acc+1, 0)
+    window.scan_2$ = first$.subscribe((res) => {
+                            printOutput(res, document.getElementById('result-sample2'));
+                        });
+})();</script>
+
+    </body>
+</html>
