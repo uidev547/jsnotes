@@ -1,28 +1,24 @@
-var mousemoves$ = Rx.Observable.fromEvent(document.getElementById('item1'), 'mousemove');
-var mousedowns$ = Rx.Observable.fromEvent(document.getElementById('item1'),'mousedown');
-var mouseups$ = Rx.Observable.fromEvent(document.getElementById('item1'),'mouseup');
-
-/*mousemoves$.subscribe((e) => {
-    console.log('mousemoves$', e.clientX, e.clientY);
-});*/
-/*mousedowns$.subscribe((e) => {
-    console.log('mousedowns$', e.clientX, e.clientY);
-});
-mouseups$.subscribe((e) => {
-    console.log('mouseups$', e.clientX, e.clientY);
-});*/
-
-
-mousedowns$.concatMap((clickEvent) => mousemoves$
-                            .map((e) => {
-                                    return {
-                                        left: e.clientX - clickEvent.offsetX,
-                                        top: e.clientY - clickEvent.offsetY,
-                                    };
-                                }
-                            ).takeUntil(mouseups$)
-                        ).subscribe((x) => {
-                            document.getElementById('item1').style.left = x.left + 'px';
-                            document.getElementById('item1').style.top = x.top + 'px';
-                        });
+var createMouseDrags = function(element) {
+    var parentEle = document.body;
+    var mousemoves$ = Rx.Observable.fromEvent(parentEle, 'mousemove');
+    var mousedowns$ = Rx.Observable.fromEvent(element,'mousedown');
+    var mouseups$ = Rx.Observable.fromEvent(element,'mouseup');
+    return mousedowns$.concatMap((clickEvent) => mousemoves$
+                .map((mousemoveEvent) => {
+                        return {
+                            left: mousemoveEvent.clientX - clickEvent.offsetX,
+                            top: mousemoveEvent.clientY - clickEvent.offsetY
+                        };
+                    }
+                ).takeUntil(mouseups$)
+            );
+    
+}
+var element = document.getElementById('item1');
+var mouseDrag$ = createMouseDrags(element);
+    mouseDrag$
+    .subscribe((x) => {
+            element.style.left = x.left + 'px';
+            element.style.top = x.top +  'px';
+        });
 

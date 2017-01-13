@@ -12,6 +12,7 @@
     border: 1px solid #999;
     border-radius: 3px;
     user-select: none;
+    z-index: 1;
 }
 .draggable-item2 {
     top: 10px;
