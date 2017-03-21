@@ -1,7 +1,7 @@
-##installation
+## installation
 npm install webpack -g
 
-##setup
+## setup
 entry.js
 ```
 document.write("It works.");
@@ -20,7 +20,7 @@ index.html
 ```
 webpack ./entry.js bundle.js
 
-##Adding loaders
+## Adding loaders
 style.css
 ```
 body {
@@ -32,7 +32,7 @@ update **entry.js**
 require("!style!css!./style.css");
 document.write('It works.');
 
-##BINDING LOADERS
+## BINDING LOADERS
 
 update **entry.js**
 require("!./style.css");
