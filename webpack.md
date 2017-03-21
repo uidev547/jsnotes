@@ -29,14 +29,18 @@ body {
 ```
 
 update **entry.js**
+```
 require("!style!css!./style.css");
 document.write('It works.');
+```
 
 ## BINDING LOADERS
 
 update **entry.js**
+```
 require("!./style.css");
 document.write('It works.');
+```
 
 webpack ./entry.js bundle.js --module-bind 'css=style!css'
 
