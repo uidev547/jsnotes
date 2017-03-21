@@ -68,6 +68,6 @@ webpack --progress --colors --watch
 
 
 ## DEVELOPMENT SERVER
-npm install webpack-dev-server -g
+npm install webpack-dev-server -g<br/>
 webpack-dev-server --progress --colors
 
